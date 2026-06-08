@@ -1,0 +1,22 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Message {
+  id              Int      @id @default(autoincrement())
+  type            String   // 'text' atau 'image'
+  text_content    String?  // Isi ucapan jika bertipe teks
+  hex_black_array String?  // Data string JSON array hitam untuk E-paper
+  hex_red_array   String?  // Data string JSON array merah untuk E-paper
+  status          String   @default("pending") // 'pending', 'delivered', 'superseded'
+  created_at      DateTime @default(now())
+
+  @@map("messages")
+}
