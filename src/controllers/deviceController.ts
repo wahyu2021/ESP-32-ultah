@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import { messageRepository } from '../services/messageRepository.js';
+import { telemetryLogger } from '../utils/logger.js';
 
 export const handleDevicePoll = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -47,6 +48,25 @@ export const handleDevicePoll = async (req: Request, res: Response, next: NextFu
     // Jika tipe tidak dikenali (fallback keamanan)
     return res.status(200).json({ has_update: false });
 
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const handleDeviceStatus = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const telemetryData = req.body;
+    
+    // Log data telemetri ke file khusus
+    telemetryLogger.info('Device Telemetry Received', { 
+      ip: req.ip,
+      ...telemetryData 
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Telemetry logged successfully'
+    });
   } catch (error) {
     next(error);
   }
