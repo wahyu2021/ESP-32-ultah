@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  smart-frame-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: iot-smart-frame
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      # Ganti kunci ini saat deploy ke VPS!
+      - API_KEY=rahasia_untuk_bot_wa_123
+      - DEVICE_KEY=rahasia_untuk_esp32_123
+    volumes:
+      # Mount folder prisma untuk menyimpan data SQLite agar persisten
+      - ./prisma_data:/app/prisma
+      # Mount folder log
+      - ./logs:/app/logs

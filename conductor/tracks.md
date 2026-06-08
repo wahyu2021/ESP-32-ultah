@@ -11,4 +11,4 @@ Proyek dibagi menjadi tahapan kecil (atomic) untuk memastikan kualitas kode dan 
 | `05-messaging-api` | WhatsApp Bridge Endpoints (Text & Image) | Done | [View](./tracks/05-messaging-api/index.md) |
 | `06-device-polling-api` | ESP32 Integration & Payload Delivery | Done | [View](./tracks/06-device-polling-api/index.md) |
 | `07-telemetry-monitoring` | Device Status & Logging System | Done | [View](./tracks/07-telemetry-monitoring/index.md) |
-| `08-dockerization-final` | Containerization & Production Readiness | In Progress | [View](./tracks/08-dockerization-final/index.md) |
+| `08-dockerization-final` | Containerization & Production Readiness | Done | [View](./tracks/08-dockerization-final/index.md) |
