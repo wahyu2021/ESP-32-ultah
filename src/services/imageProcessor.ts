@@ -62,9 +62,9 @@ export const processImageToBWR = async (imageBuffer: Buffer): Promise<BWRProcess
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const i = (y * width + x) * 3;
-      const oldR = pixels[i];
-      const oldG = pixels[i + 1];
-      const oldB = pixels[i + 2];
+      const oldR = pixels[i] || 0;
+      const oldG = pixels[i + 1] || 0;
+      const oldB = pixels[i + 2] || 0;
 
       const { color, pr, pg, pb } = getNearestColor(oldR, oldG, oldB);
       resultColors[y * width + x] = color;
@@ -75,27 +75,27 @@ export const processImageToBWR = async (imageBuffer: Buffer): Promise<BWRProcess
 
       // Error Diffusion (Floyd-Steinberg)
       if (x + 1 < width) {
-        pixels[i + 3] += errR * 7 / 16;
-        pixels[i + 4] += errG * 7 / 16;
-        pixels[i + 5] += errB * 7 / 16;
+        pixels[i + 3] = (pixels[i + 3] || 0) + errR * 7 / 16;
+        pixels[i + 4] = (pixels[i + 4] || 0) + errG * 7 / 16;
+        pixels[i + 5] = (pixels[i + 5] || 0) + errB * 7 / 16;
       }
       if (x - 1 >= 0 && y + 1 < height) {
         const idx = ((y + 1) * width + (x - 1)) * 3;
-        pixels[idx] += errR * 3 / 16;
-        pixels[idx + 1] += errG * 3 / 16;
-        pixels[idx + 2] += errB * 3 / 16;
+        pixels[idx] = (pixels[idx] || 0) + errR * 3 / 16;
+        pixels[idx + 1] = (pixels[idx + 1] || 0) + errG * 3 / 16;
+        pixels[idx + 2] = (pixels[idx + 2] || 0) + errB * 3 / 16;
       }
       if (y + 1 < height) {
         const idx = ((y + 1) * width + x) * 3;
-        pixels[idx] += errR * 5 / 16;
-        pixels[idx + 1] += errG * 5 / 16;
-        pixels[idx + 2] += errB * 5 / 16;
+        pixels[idx] = (pixels[idx] || 0) + errR * 5 / 16;
+        pixels[idx + 1] = (pixels[idx + 1] || 0) + errG * 5 / 16;
+        pixels[idx + 2] = (pixels[idx + 2] || 0) + errB * 5 / 16;
       }
       if (x + 1 < width && y + 1 < height) {
         const idx = ((y + 1) * width + (x + 1)) * 3;
-        pixels[idx] += errR * 1 / 16;
-        pixels[idx + 1] += errG * 1 / 16;
-        pixels[idx + 2] += errB * 1 / 16;
+        pixels[idx] = (pixels[idx] || 0) + errR * 1 / 16;
+        pixels[idx + 1] = (pixels[idx + 1] || 0) + errG * 1 / 16;
+        pixels[idx + 2] = (pixels[idx + 2] || 0) + errB * 1 / 16;
       }
     }
   }
@@ -107,17 +107,19 @@ export const processImageToBWR = async (imageBuffer: Buffer): Promise<BWRProcess
 
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
-      const color = resultColors[y * width + x];
+      const color = resultColors[y * width + x] || 0;
       const byteIndex = y * bytesPerRow + Math.floor(x / 8);
       // MSB First: Piksel paling kiri ada di bit ke-7
       const bitIndex = 7 - (x % 8); 
 
       if (color === 0) {
         // Hitam -> bit 0
-        bufferBlack[byteIndex] &= ~(1 << bitIndex);
+        const currentByte = bufferBlack[byteIndex] || 0xFF;
+        bufferBlack[byteIndex] = currentByte & ~(1 << bitIndex);
       } else if (color === 2) {
         // Merah -> buffer black jadi putih (1, tidak diubah), buffer merah jadi (1)
-        bufferRed[byteIndex] |= (1 << bitIndex);
+        const currentByte = bufferRed[byteIndex] || 0x00;
+        bufferRed[byteIndex] = currentByte | (1 << bitIndex);
       }
     }
   }

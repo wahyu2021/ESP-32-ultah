@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import { responseHandler } from '../utils/responseHandler.js';
 
 export const errorHandler = (err: any, req: Request, res: Response, _next: NextFunction) => {

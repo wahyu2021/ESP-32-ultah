@@ -4,6 +4,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import { errorHandler, notFoundHandler } from './middlewares/errorHandler.js';
+import messageRoutes from './routes/messageRoutes.js';
 
 const app: Express = express();
 
@@ -24,6 +25,9 @@ app.use(morgan('dev'));
 app.get('/health', (req: Request, res: Response) => {
   res.status(200).json({ status: 'OK', message: 'IoT Smart Frame API is running' });
 });
+
+// API Routes
+app.use('/api/v1/messages', messageRoutes);
 
 // Middleware - 404 Not Found
 app.use(notFoundHandler);

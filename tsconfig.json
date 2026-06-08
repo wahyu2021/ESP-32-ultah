@@ -7,7 +7,7 @@
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "module": "esnext",
+    "module": "Node16",
     "target": "esnext",
     "types": [],
     // For nodejs:
@@ -17,8 +17,8 @@
 
     // Other Outputs
     "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
+    "declaration": false,
+    "declarationMap": false,
 
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,
@@ -41,8 +41,9 @@
     "moduleDetection": "force",
     "skipLibCheck": true,
 
-    "moduleResolution": "node10",
+    "moduleResolution": "node16",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-  }
+  },
+  "exclude": ["prisma.config.ts"]
 }

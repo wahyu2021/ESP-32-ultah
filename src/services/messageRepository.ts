@@ -13,7 +13,7 @@ export const messageRepository = {
    * statusnya akan diubah menjadi 'superseded' terlebih dahulu.
    */
   async createMessage(data: CreateMessageData) {
-    return prisma.$transaction(async (tx) => {
+    return prisma.$transaction(async (tx: any) => {
       // 1. Ubah semua pesan yang masih 'pending' menjadi 'superseded'
       await tx.message.updateMany({
         where: { status: 'pending' },

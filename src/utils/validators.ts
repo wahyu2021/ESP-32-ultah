@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const textMessageSchema = z.object({
   body: z.object({
     text: z.string({
-      required_error: 'Text is required',
+      message: 'Text is required',
     }).min(1, 'Text cannot be empty').max(200, 'Text too long (max 200 chars)'),
     sender: z.string().optional(),
   }),
